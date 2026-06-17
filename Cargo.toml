@@ -4,3 +4,10 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+
+[profile.release]
+lto = true          # Link-time optimization – removes dead code
+codegen-units = 1   # Slower build but better optimizations
+opt-level = "z"     # Optimize for size (also "s" but "z" is more aggressive)
+strip = true        # Strip symbols (Rust 1.59+)
+panic = "abort"     # Remove panic unwinding code (no backtraces)	
