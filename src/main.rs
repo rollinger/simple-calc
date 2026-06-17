@@ -1,5 +1,3 @@
-#[allow(dead_code)]
-
 mod parser;
 
 fn calculate_result(expr: &str) -> f64 {
