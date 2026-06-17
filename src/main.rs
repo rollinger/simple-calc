@@ -1,26 +1,22 @@
+use std::env;
 mod parser;
-
-fn calculate_result(expr: &str) -> f64 {
-    /* return the result of the expression
-    - sanity check: allowed & matching brackets
-    - extract ops: sequence of recusive math ops 
-    Example: "(120000/((4*5*8)*((3+3)*2)))":
-        r = rec("120000/((4*5*8)*((3+3)*2))")       => 5) 120000 / 1920 = 62.5
-                rec("(4*5*8)*((3+3)*2)")            => 4) 160 * 12 = 1920
-                    rec("(3+3)*2")                  => 2) 12
-                        rec("3+3")                  => 1) 6
-                    rec("4*5*8")                    => 3) 160
-     */
-    let _e_len: usize = expr.len();
-    0.0
-}
-
-
-
+mod calc;
 
 fn main() {
-    let expression_string: &str = "120000/((4*5*8)*((3+3)*2))";
-    match parser::sanity_check(expression_string) {
+    let args: Vec<String> = env::args().collect();
+    let expression: &str;
+
+    // Check for arguments
+    if args.len() < 2 {
+        // TODO: Add user input
+        eprintln!("Usage: {} <expression>", args[0]);
+        //std::process::exit(1);
+        expression = "120000/((4*5*8)*((3+3)*2))";
+    } else {
+        expression = &args[1];
+    }
+
+    match parser::sanity_check(expression) {
         false => {
             eprintln!("ERROR: Malformed Expression! Aborting...");
             return ();
@@ -29,7 +25,6 @@ fn main() {
             println!("Expression Good!");
         }
     }
-    let result: f64 = calculate_result(expression_string);
-    //assert_eq!(result, 62.5);
-    println!(">:_ {} => {}", expression_string, result);
+    let result: f64 = calc::calculate_result(expression);
+    println!("=> {} = {}", expression, result);
 }
